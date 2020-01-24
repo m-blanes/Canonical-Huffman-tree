@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-#modulos
+#modules
 import os
 import sys
 
-#abrir archivo
+#open file
 nom = sys.argv[1]
 if os.path.isfile(nom) == True:
 	with open(nom,'r') as archivo:
@@ -12,19 +12,19 @@ if os.path.isfile(nom) == True:
 		archivo.close()
 else:
 	sec = nom
-print('\nSu secuencia:\n',sec)
+print('\nSequence:\n',sec)
 	
-#Obtener frecuencias de caracteres
+#Get character frequency
 sect = set(sec) #set del texto
 lista_car = []
 lon = len(sec)
 for i in sect:
     lista_car.append([i,round(sec.count(i)/lon,2)])
 
-print('\nFrecuencias de cada carácter: \n',lista_car)
+print('\nCharacter frequency: \n',lista_car)
 lista_car.sort(key=lambda x: x[1]) 
 
-#Hacer arbol huffman
+#make Huffman tree
 nodo = 0
 valor = 0
 i = 0
@@ -54,7 +54,7 @@ while i < size:
 	    num_nodo += 1
 	i += 1
 
-## Asignar codigos del árbol 
+## Get codes 
 num = 0
 for i in dicc_arbol.values():
 	for j in i:
@@ -65,19 +65,19 @@ for i in dicc_arbol.values():
 	        num += 1	
 
 
-#invertir dict.
+#get inverted dict
 new_niv = nivel*1
 new_dict = dict()
 for i in dicc_arbol.values():
     new_dict.update({new_niv:i})
     new_niv += -1
-new_dict[0][0][2] = '' #eliminar el codigo del nivel 0
+new_dict[0][0][2] = '' 
 
-print('\nRepresentación árbol de Huffman: ')
+print('\nHuffman tree: ')
 for k in sorted(new_dict.keys()):
 	print('Nivel ',k, new_dict[k])
 
-#diccionario de códigos no canónico
+#Non-canonic tree codes
 dict_claves = {}
 for i in sect:
     dict_claves.update({i : ''})
@@ -87,9 +87,8 @@ for i in sect:
                 dict_claves[i] += h[2]
 
 dict_ord = sorted(dict_claves.items(), key=lambda x: len(x[1]))
-#dict_ord = [('a','0'),('b','11'),('c','101'),('d','1000'),('e','10011'),('f','10010')]
-print(dict_ord)
-#función sumar binarios
+
+#binary sum
 def add_binary_nums(x, y): 
         max_len = max(len(x), len(y)) 
   
@@ -115,7 +114,7 @@ def add_binary_nums(x, y):
         return result.zfill(max_len) 
 
 
-#Obtención de los códigos del árbol canónico
+#Get canonic tree codes
 lista_ord = [list(i) for i in dict_ord]
 lista_ord[0][1] = '0'*len(lista_ord[0][1])
 long = len(lista_ord)
@@ -129,10 +128,10 @@ for i in range(1,long):
             lista_ord[i][1] += '0'*(new_bit - bit)
     bit = len(lista_ord[i][1])
 
-print('\nCódigos del árbol canónico: \n',lista_ord)
+print('\nCanonic tree codes: \n',lista_ord)
 
-#Obtención de la secuencia en binario
+#Get binary sequence
 for i in lista_ord:
 	sec = sec.replace(i[0],i[1])
 
-print('\nSecuencia en binario: ',sec)
+print('\nBinary Sequence: ',sec)
